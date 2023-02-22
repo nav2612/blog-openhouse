@@ -1,31 +1,36 @@
-import React from 'react';
-import './Cards.css';
-import CardItem from './CardItem';
+import React, { useState, useEffect } from "react";
+import {collection, getDocs } from "firebase/firestore";
+import { db } from "./firebase-config"
+import CardItem from "./CardItem";
+import "./Cards.css";
 
 function Cards() {
+  const [cards, setCards] = useState([]);
+  const cardsRef = collection(db, "cards");
+
+  useEffect(() => {
+    async function fetchCards() {
+      const snapshot = await getDocs(cardsRef);
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setCards(data);
+    }
+    fetchCards();
+  }, []);
+
   return (
-    <div className='cards'>
-      <div className='cards__container'>
-        <div className='cards__wrapper'>
-          <ul className='cards__items'>
-            <CardItem
-              src='https://www.thehousedesigners.com/images/plans/ROD/bulk/7876/CL-20-020_front_6-copy-Large_m.jpg'
-              text='Explore the hidden waterfall deep inside the Amazon Jungle'
-              label='Townhouse'
-              path='/'
-            />
-            <CardItem
-              src='https://static01.nyt.com/images/2011/10/13/garden/13vermont-span/13HOUSEPROUD1-articleLarge.jpg'
-              text='Travel through the Islands of Bali in a Private Cruise'
-              label='1 day left for the tour'
-              path='/'
-            />
-           <CardItem
-              src='https://ulrichome.com/wp-content/uploads/2018/11/01-13.jpg'
-              text='Travel through the Islands of Bali in a Private Cruise'
-              label='Luxury'
-              path='/'
-            /> 
+    <div className="cards">
+      <div className="cards__container">
+        <div className="cards__wrapper">
+          <ul className="cards__items">
+            {cards.map((card) => (
+              <CardItem
+                key={card.id}
+                src={card.image}
+                text={card.description}
+                label={card.label}
+                path={card.path}
+              />
+            ))}
           </ul>
         </div>
       </div>
