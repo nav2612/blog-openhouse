@@ -1,3 +1,4 @@
+import { getDownloadURL, ref } from 'firebase/storage';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Cards.css';
@@ -8,8 +9,8 @@ function CardItem(props) {
 
   // function to get the download URL of the image from Firebase storage
   const getImageUrl = async () => {
-    const imageRef = storage.refFromURL(props.src);
-    const url = await imageRef.getDownloadURL();
+    const imageRef = ref(storage,props.src);
+    const url = await getDownloadURL(imageRef);
     setImageUrl(url);
   };
 
