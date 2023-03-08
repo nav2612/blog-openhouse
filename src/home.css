@@ -64,6 +64,19 @@
 }
 body{
     margin:0;
-    padding:0;
-        
+    padding:0;    
+}
+
+.main-image{
+    padding: 10px 15rem;
+    height:350px;
+    width: 1410px
+}
+
+@media only screen and (max-width: 600px) {
+.main-image {
+    padding: 10px 1rem;
+    width: 100%;
+    height: auto;
+  }
 }
